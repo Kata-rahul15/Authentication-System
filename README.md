@@ -1,8 +1,8 @@
-# 🔐 Spring Boot Authentication Service
+# 🔐 TalentPrep Authentication Service
 
-A production-style authentication and authorization service built using  Spring Boot 3 ,  Spring Security 6 , and  JWT .
+A production-ready Authentication and Authorization service built with **Spring Boot**, **Spring Security**, **JWT**, **Redis**, **OAuth2**, and **MySQL**.
 
-This project demonstrates secure authentication using Access Tokens, Refresh Tokens, OAuth2 Login, Email OTP verification, Role-Based Authorization, and secure password management.
+This project demonstrates modern backend authentication practices including JWT-based authentication, Refresh Tokens, Redis-backed OTP management, OAuth2 social login, Role-Based Access Control (RBAC), secure password recovery, and production-oriented REST APIs.
 
 ---
 
@@ -12,41 +12,19 @@ This project demonstrates secure authentication using Access Tokens, Refresh Tok
 
 - User Registration
 - Secure Login
-- Logout
-- JWT Authentication
-- Stateless Authentication
-- Access Token Authentication
+- Secure Logout
+- JWT Access Token Authentication
 - Refresh Token Authentication
-
----
-
-## Authorization
-
-- Role Based Access Control (RBAC)
-- Spring Security Method Authorization
-- Protected REST APIs
-
----
-
-## Security Features
-
-- BCrypt Password Hashing
-- JWT Access Tokens (15 Minutes)
-- JWT Refresh Tokens (7 Days)
-- HttpOnly Cookies
-- Secure Cookies
-- SameSite Cookie Protection
-- Custom JWT Filter
-- Stateless Session Management
-- CSRF Disabled for REST APIs
-- CORS Configuration
+- Stateless Authentication
+- Cookie-Based Authentication
 
 ---
 
 ## Email Verification
 
 - Email OTP Verification
-- Account Verification
+- OTP Expiration using Redis TTL
+- Resend Verification OTP
 - Prevent Duplicate Verification
 - Secure OTP Validation
 
@@ -55,22 +33,40 @@ This project demonstrates secure authentication using Access Tokens, Refresh Tok
 ## Password Recovery
 
 - Forgot Password
-- Email OTP
 - Reset Password
 - OTP Validation
-- Secure Password Update
+- Password Encryption using BCrypt
 
 ---
 
-## OAuth2 Authentication
+## OAuth2 Login
 
-Supports OAuth2 Login using Spring Security.
+Supports secure social authentication using Spring Security OAuth2.
 
-Current flow includes
+### Providers
 
-- OAuth2 Login
+- Google Login
+- GitHub Login
+
+Includes
+
 - Custom OAuth2 Success Handler
-- User Authentication
+- Custom OAuth2 Failure Handler
+- Automatic User Registration
+- Existing User Login
+
+---
+
+## Authorization
+
+Role-Based Access Control (RBAC)
+
+### Roles
+
+- USER
+- ADMIN
+
+Permission-based authorization using Spring Security Method Security.
 
 ---
 
@@ -78,79 +74,61 @@ Current flow includes
 
 - Register
 - Login
-- View Profile
+- Logout
 - Verify Email
+- Resend OTP
+- Forgot Password
 - Reset Password
+- View Profile
 
 ---
 
-# 🏗️ Project Architecture
+# 🔒 Security Features
 
-```
-Client
-   │
-   ▼
-REST Controller
-   │
-   ▼
-Service Layer
-   │
-   ▼
-Repository Layer
-   │
-   ▼
-Database
-
-                ▲
-                │
-JWT Filter
-                │
-Spring Security
-```
-
----
-
-# 📂 Project Structure
-
-```
-src
-│
-├── Controller
-│
-├── DTO
-│
-├── Entity
-│
-├── Exception
-│
-├── Repository
-│
-├── Security
-│
-├── Service
-│
-└── Application
-```
-
----
-
-# 🛠️ Technologies Used
-
-- Java 21
-- Spring Boot
 - Spring Security 6
-- Spring Data JPA
-- Hibernate
-- JWT (JJWT)
-- OAuth2 Client
-- Maven
-- MySQL
-- Lombok
-- Jakarta Validation
+- JWT Authentication
+- Refresh Tokens
+- BCrypt Password Hashing
+- Redis Token Blacklisting
+- Redis OTP Storage
+- HttpOnly Cookies
+- Secure Cookie Configuration
+- SameSite Cookie Protection
+- Custom JWT Authentication Filter
+- Stateless Session Management
+- CORS Configuration
+- CSRF Disabled for REST APIs
+- Global Exception Handling
+- Request Validation
 
 ---
 
-# 🔑 Authentication Flow
+# 🏗️ Architecture
+
+```
+                Client
+                   │
+                   ▼
+           REST Controllers
+                   │
+                   ▼
+            Service Layer
+                   │
+         ┌─────────┴─────────┐
+         ▼                   ▼
+      Redis             MySQL Database
+   OTP / Blacklist
+         ▲
+         │
+    Spring Security
+         │
+         ▼
+     Custom JWT Filter
+```
+
+---
+
+# 🔄 Authentication Flow
 
 ```
 User Login
@@ -165,56 +143,65 @@ Generate Access Token
 Generate Refresh Token
       │
       ▼
-Store Tokens in HttpOnly Cookies
+Store Refresh Token
       │
       ▼
-Client Accesses Protected APIs
+Return JWT Cookie
       │
       ▼
-JWT Filter Validates Token
+Access Protected APIs
       │
       ▼
-Request Authorized
+JWT Filter Validation
+      │
+      ▼
+Authorized
 ```
 
 ---
 
-# 🔄 Registration Flow
+# 📧 Registration Flow
 
 ```
 User Registers
        │
        ▼
-Validate Input
+Validate Request
        │
        ▼
 Encrypt Password
        │
        ▼
-Save User
+Store User
        │
        ▼
 Generate OTP
        │
        ▼
-Send Email
+Store OTP in Redis
+       │
+       ▼
+Send Verification Email
        │
        ▼
 Verify OTP
        │
        ▼
-Account Activated
+Activate Account
 ```
 
 ---
 
-# 🔒 Password Reset Flow
+# 🔑 Password Reset Flow
 
 ```
 Forgot Password
         │
         ▼
 Generate OTP
+        │
+        ▼
+Store OTP in Redis
         │
         ▼
 Send Email
@@ -224,75 +211,123 @@ Verify OTP
         │
         ▼
 Reset Password
-        │
-        ▼
-Password Updated
 ```
 
 ---
 
-# 📌 API Endpoints
+# 🚪 Logout Flow
+
+```
+User Logout
+      │
+      ▼
+Extract JWT
+      │
+      ▼
+Blacklist JWT in Redis
+      │
+      ▼
+Delete Refresh Token
+      │
+      ▼
+Clear Authentication Cookies
+```
+
+---
+
+# 📂 Project Structure
+
+```
+src
+├── Controller
+├── DTO
+├── Entity
+├── Exception
+├── OAuth
+├── Repository
+├── Security
+├── Service
+├── config
+└── resources
+    └── templates
+        └── email
+```
+
+---
+
+# 🛠️ Tech Stack
+
+- Java 17
+- Spring Boot
+- Spring Security
+- Spring Data JPA
+- Hibernate
+- MySQL
+- Redis
+- JWT (JJWT)
+- OAuth2 Client
+- Thymeleaf
+- Maven
+- Lombok
+- Jakarta Validation
+
+---
+
+# 📌 REST API
 
 | Method | Endpoint | Description |
 |---------|----------|-------------|
-| POST | /register | Register User |
-| POST | /login | Login |
-| POST | /logout | Logout |
-| POST | /send-verify-otp | Verify Account |
-| POST | /send-reset-otp | Verify Password Reset OTP |
-| POST | /forgot-password | Forgot Password |
-| GET | /profile | User Profile |
+| POST | `/register` | Register User |
+| POST | `/login` | Login |
+| POST | `/logout` | Logout |
+| POST | `/send-verify-otp` | Verify Email |
+| POST | `/resend-otp` | Resend Verification OTP |
+| POST | `/send-reset-otp` | Send Password Reset OTP |
+| POST | `/forgot-password` | Verify Password Reset OTP |
+| POST | `/reset-password` | Reset Password |
+| GET | `/profile` | User Profile |
 
 ---
 
-# 🔐 Security Highlights
+# 📧 Email Templates
 
-- JWT Authentication
-- Refresh Token Strategy
-- Stateless Security
-- Role-Based Authorization
-- HttpOnly Cookies
-- Secure Cookies
-- BCrypt Password Encryption
-- Spring Security Filters
-- OAuth2 Login
-- Validation
-- Global Exception Handling
+- Welcome Email
+- Account Verification OTP
+- Password Reset OTP
+
+Built using Thymeleaf HTML templates.
 
 ---
 
-# 📈 Future Improvements
+# 🚀 Future Roadmap
 
-- Redis Refresh Token Blacklisting
-- Redis OTP Cache
+- Kafka-based Email Microservice
+- API Gateway
+- Docker
+- Kubernetes
+- OpenAPI / Swagger
 - Rate Limiting
-- Email Service using Kafka
-- Docker Support
-- Kubernetes Deployment
-- Swagger/OpenAPI Documentation
-- Monitoring with Prometheus & Grafana
-- CI/CD Pipeline using GitHub Actions
+- Prometheus & Grafana Monitoring
+- GitHub Actions CI/CD
 - Multi-Factor Authentication (MFA)
 
 ---
 
-# 💡 Learning Outcomes
+# 💡 What This Project Demonstrates
 
-This project demonstrates practical experience with:
-
+- Production-ready Authentication
+- Secure REST API Design
 - Spring Security
 - JWT Authentication
-- OAuth2 Authentication
-- REST API Development
-- Password Encryption
-- Authentication Filters
+- OAuth2 Social Login
+- Redis Integration
 - Role-Based Authorization
-- Email Integration
-- Secure Cookie Management
+- Email Verification
+- Password Recovery
 - Exception Handling
 - Layered Architecture
-- Production-Oriented Backend Development
+- Clean Code Practices
 
 ---
 
-# ⭐ If you found this project useful, consider giving it a star!
+## ⭐ If you found this project helpful, consider giving it a star!
