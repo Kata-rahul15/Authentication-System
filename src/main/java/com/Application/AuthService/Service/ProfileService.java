@@ -57,7 +57,6 @@ public class ProfileService {
                     )
             );
         } catch (AuthenticationException e) {
-            System.out.println("Authentication failed: " + e.getMessage());
             e.printStackTrace();
             throw e;
         }
@@ -155,10 +154,7 @@ public class ProfileService {
     }
 
     public VerifyOtpResponse verifyResetOtp(VerifyOtpRequest request) {
-//        UserEntity user =userRepository.findByEmail(
-//                request.getEmail()).orElseThrow(
-//                        ()-> new ResponseStatusException(HttpStatus.BAD_REQUEST,"User Not Found"));
-//
+
         if (!otpService.verifyOtp(request.getEmail(), request.getOtp())) {
             throw new InvalidOtpException("Invalid Otp");
         }
@@ -225,8 +221,6 @@ public class ProfileService {
                 .maxAge(Duration.ofDays(7))
                 .build();
 
-        System.out.println("Refresh endpoint hit and access token generated and sent");
-        System.out.println("Cookies " + accessCookie + refreshCookie);
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, accessCookie.toString())
                 .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())

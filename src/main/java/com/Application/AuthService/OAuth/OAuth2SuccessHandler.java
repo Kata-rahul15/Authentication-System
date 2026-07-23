@@ -43,7 +43,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                                         HttpServletResponse response,
                                         Authentication authentication)
             throws IOException, ServletException {
-
+        System.out.println("===== OAuth2SuccessHandler called =====");
         OAuth2AuthenticationToken oauthToken =
                 (OAuth2AuthenticationToken) authentication;
 
@@ -61,10 +61,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String email = userInfo.getEmail();
         String name = userInfo.getName();
 
-        /*
-         * GitHub does not always return email.
-         * If email is null, fetch it using GitHub API.
-         */
         if ("github".equals(registrationId) && email == null) {
 
             OAuth2AuthorizedClient client =
@@ -95,8 +91,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 }
             }
         }
-        UserEntity user = userRepository.findByEmail(email).orElseThrow(
-                ()->new ResponseStatusException(HttpStatus.BAD_REQUEST,"User Not Found"));
+        UserEntity user = userRepository.findByEmail(email).orElse(null);
 
         if (user == null) {
 
@@ -125,7 +120,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         ResponseCookie accessCookie =
                 ResponseCookie.from("AccessToken", accessToken)
                         .httpOnly(true)
-                        .secure(true)
+                        .secure(false)
                         .path("/")
                         .maxAge(Duration.ofMinutes(15))
                         .build();
@@ -133,13 +128,14 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         ResponseCookie refreshCookie =
                 ResponseCookie.from("RefreshToken", refreshToken.getToken())
                         .httpOnly(true)
-                        .secure(true)
+                        .secure(false)
                         .path("/refresh")
                         .maxAge(Duration.ofDays(7))
                         .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
+        System.out.println("oauth successfull");
 
         response.sendRedirect("http://localhost:5173/home");
     }

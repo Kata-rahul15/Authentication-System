@@ -28,8 +28,6 @@ public class OtpService {
         if(!storedOtp.equals(enteredOtp)){
             return false;
         }
-        System.out.println("Stored OTP = " + storedOtp);
-        System.out.println("Entered OTP = " + enteredOtp);
         redisService.delete(key);
         return true;
     }

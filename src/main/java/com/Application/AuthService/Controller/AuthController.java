@@ -51,8 +51,6 @@ public class AuthController {
                 .build();
 
 
-        System.out.println("cookie sent access  " + AccessCookie);
-        System.out.println("cookie sent refresh " + RefreshCookie);
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, AccessCookie.toString())
                 .header(HttpHeaders.SET_COOKIE, RefreshCookie.toString())
