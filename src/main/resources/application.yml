@@ -1,10 +1,9 @@
 spring:
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE:local}
+    active: ${SPRING_PROFILES_ACTIVE:prod}
   application:
     name: student
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${db_url}
     username: ${db_username}
     password: ${db_password}

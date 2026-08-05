@@ -1,23 +1,32 @@
 spring:
   application:
     name: student
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: ${db_url}
+#    username: ${db_username}
+#    password: ${db_password}
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${db_url}
     username: ${db_username}
     password: ${db_password}
-
-    hikari:
-      maximum-pool-size: 30
-      minimum-idle: 5
-      connection-timeout: 3000
-      idle-timeout: 600000
-      max-lifetime: 1800000
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: false
+
+    show-sql: true
+
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: false
   security:
     oauth2:
       client:
