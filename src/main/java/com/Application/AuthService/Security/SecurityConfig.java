@@ -61,6 +61,7 @@ public class SecurityConfig {
                                 "/send-verify-otp",
                                 "/send-reset-otp",
                                 "/forgot-password",
+                                "/mail-test",
                                 "/resend-otp",
                                 "/reset-password",
                                 "/oauth2/**",
