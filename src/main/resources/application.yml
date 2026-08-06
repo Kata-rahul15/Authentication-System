@@ -35,21 +35,21 @@ spring:
             scope:
               - email
               - profile
-  mail:
-    host: smtp-relay.brevo.com
-    port: 587
-    username: ${mail_username}
-    password: ${mail_password}
-    properties:
-      mail:
-        smtp:
-          from: katarahul8@gmail.com
-          auth: true
-        starttls:
-          enable: true
-
-      debug: true
-    protocol: smtp
+#  mail:
+#    host: smtp-relay.brevo.com
+#    port: 587
+#    username: ${mail_username}
+#    password: ${mail_password}
+#    properties:
+#      mail:
+#        smtp:
+#          from: katarahul8@gmail.com
+#          auth: true
+#        starttls:
+#          enable: true
+#
+#      debug: true
+#    protocol: smtp
 
   data:
     redis:

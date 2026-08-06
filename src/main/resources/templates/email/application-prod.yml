@@ -1,3 +1,6 @@
+brevo:
+  api-key: ${BREVO_API_KEY}
+
 spring:
   application:
     name: student
@@ -52,26 +55,28 @@ spring:
 #          enable: true
 #
 #      debug: true
+##    protocol: smtp
+#  mail:
+#    host: smtp-relay.brevo.com
+#    port: 465
+#    username: ${mail_username}
+#    password: ${mail_password}
 #    protocol: smtp
-  mail:
-    host: smtp-relay.brevo.com
-    port: 465
-    username: ${mail_username}
-    password: ${mail_password}
-    protocol: smtp
+#
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+#            required: true
+#          connectiontimeout: 10000
+#          timeout: 10000
+#          writetimeout: 10000
+#
+#        debug: true
 
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-            required: true
-          connectiontimeout: 10000
-          timeout: 10000
-          writetimeout: 10000
 
-        debug: true
   data:
     redis:
       host: ${redis_host}
@@ -84,6 +89,10 @@ logging:
     org.eclipse.angus.mail: DEBUG
     com.zaxxer.hikari: DEBUG
     org.postgresql: DEBUG
+
+
+
+
 jwt:
   secret:
     key: ${jwt_secret_key}

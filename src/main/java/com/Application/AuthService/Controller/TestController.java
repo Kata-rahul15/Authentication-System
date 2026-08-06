@@ -23,18 +23,5 @@ public class TestController {
             return "Authentication Service Running!";
         }
 
-    @GetMapping("/mail-test")
-    public String smtpTest() {
-        try (Socket socket = new Socket()) {
-            socket.connect(
-                    new InetSocketAddress("smtp-relay.brevo.com", 587),
-                    5000
-            );
-            return "Connected";
-        } catch (Exception e) {
-            return e.toString();
-        }
-    }
-
 
 }
