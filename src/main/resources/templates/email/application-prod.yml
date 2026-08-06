@@ -53,7 +53,6 @@ spring:
 #
 #      debug: true
 #    protocol: smtp
-
   mail:
     host: smtp-relay.brevo.com
     port: 587
@@ -62,10 +61,17 @@ spring:
     protocol: smtp
 
     properties:
-      mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
-      mail.debug: true
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 10000
+          timeout: 10000
+          writetimeout: 10000
 
+        debug: true
   data:
     redis:
       host: ${redis_host}

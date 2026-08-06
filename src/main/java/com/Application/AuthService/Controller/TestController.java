@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.InetSocketAddress;
+import java.net.Socket;
+
 @RestController
 public class TestController {
 
@@ -21,9 +24,16 @@ public class TestController {
         }
 
     @GetMapping("/mail-test")
-    public String mailTest() {
-        emailService.sendVerifyOtp("katarahul8@@gmail.com", "rahul","123456");
-        return "Mail requested";
+    public String smtpTest() {
+        try (Socket socket = new Socket()) {
+            socket.connect(
+                    new InetSocketAddress("smtp-relay.brevo.com", 587),
+                    5000
+            );
+            return "Connected";
+        } catch (Exception e) {
+            return e.toString();
+        }
     }
 
 
