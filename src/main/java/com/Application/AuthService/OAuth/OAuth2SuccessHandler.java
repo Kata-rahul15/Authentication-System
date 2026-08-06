@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -31,6 +32,9 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
+
+    @Value("${app.url-redirect}")
+    private String redirectUrl;
 
     private final UserRepository userRepository;
     private final OAuth2AuthorizedClientService authorizedClientService;
@@ -137,6 +141,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
         System.out.println("oauth successfull");
 
-        response.sendRedirect("http://localhost:5173/home");
+        response.sendRedirect(redirectUrl);
     }
 }

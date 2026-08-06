@@ -57,11 +57,11 @@ spring:
       port: ${redis_port}
       username: ${redis_username}
       password: ${redis_password}
-#logging:
-#  level:
-#    org.springframework.mail: DEBUG
-#    org.eclipse.angus.mail: DEBUG
-#    com.zaxxer.hikari: DEBUG
+
 jwt:
   secret:
     key: ${jwt_secret_key}
+
+app:
+  url-redirect: ${Url_redirect}
+  url-frontend: ${Url_frontend}
