@@ -19,6 +19,6 @@ public class OAuth2FailureHandler implements AuthenticationFailureHandler {
             throws IOException, ServletException {
 
         System.out.println("===== OAuth2FailureHandler called =====");
-        response.sendRedirect("http://localhost:5173/login?error=oauth");
+        response.sendRedirect("https://talent-prep-frontend.vercel.app/login?error=oauth");
     }
 }
