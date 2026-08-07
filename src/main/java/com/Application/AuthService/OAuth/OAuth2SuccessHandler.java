@@ -12,10 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -125,7 +123,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         ResponseCookie accessCookie =
                 ResponseCookie.from("AccessToken", accessToken)
                         .httpOnly(true)
-                        .secure(false)
+                        .secure(true)
+                        .sameSite("None")
                         .path("/")
                         .maxAge(Duration.ofMinutes(15))
                         .build();

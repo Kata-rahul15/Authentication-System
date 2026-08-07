@@ -181,7 +181,8 @@ public class ProfileService {
     public ProfileResponse getProfile(Authentication authentication) {
         String email = authentication.getName();
 
-        UserEntity user = userRepository.findByEmail(email).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST,"User Not Found"));
+        UserEntity user = userRepository.findByEmail(email).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.BAD_REQUEST,"User Not Found"));
         return ProfileResponse.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
