@@ -31,7 +31,7 @@ public class UserEntity {
     @Column(unique = true)
     private String userId;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
     private Boolean isAccountVerified;
