@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -36,6 +37,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     @Value("${app.url-redirect}")
     private String redirectUrl;
 
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final OAuth2AuthorizedClientService authorizedClientService;
     private final JwtUtil jwtUtil;
@@ -104,6 +106,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     .email(email)
                     .username(name)
                     .role(Role.ROLE_USER)
+                    .password(passwordEncoder.encode(UUID.randomUUID().toString()))
                     .provider(userInfo.getProvider())
                     .isAccountVerified(true)
                     .build();
