@@ -56,12 +56,11 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login",
-                                "/",
+                                "/health",
                                 "/register",
                                 "/send-verify-otp",
                                 "/send-reset-otp",
                                 "/forgot-password",
-                                "/mail-test",
                                 "/resend-otp",
                                 "/reset-password",
                                 "/oauth2/**",

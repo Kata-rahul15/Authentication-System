@@ -12,13 +12,7 @@ import java.net.Socket;
 public class TestController {
 
 
-    private final EmailService emailService;
-    @Autowired
-    public TestController(EmailService emailService) {
-        this.emailService = emailService;
-    }
-
-    @GetMapping("/")
+    @GetMapping("/health")
         public String home() {
             return "Authentication Service Running!";
         }
