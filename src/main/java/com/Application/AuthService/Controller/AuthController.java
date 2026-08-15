@@ -6,8 +6,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -19,14 +19,18 @@ import java.net.URI;
 import java.time.Duration;
 
 @RestController
-@AllArgsConstructor
 public class AuthController {
 
     private final ProfileService profileService;
+    private final String frontendUrl;
 
-
-    @Value("${app.url-frontend}")
-    private String frontendUrl;
+    public AuthController(
+            ProfileService profileService,
+            @Value("${app.url-frontend}") String frontendUrl
+    ) {
+        this.profileService = profileService;
+        this.frontendUrl = frontendUrl;
+    }
 
 
     @PostMapping("/register")
