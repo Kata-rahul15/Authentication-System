@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.time.Duration;
 
 @RestController
@@ -21,6 +23,10 @@ import java.time.Duration;
 public class AuthController {
 
     private final ProfileService profileService;
+
+
+    @Value("${app.url-frontend}")
+    private String frontendUrl;
 
 
     @PostMapping("/register")
@@ -61,6 +67,17 @@ public class AuthController {
                         "Login Successfully Completed"));
 
     }
+
+    @GetMapping("/login")
+    public ResponseEntity<Void> oauthLoginCancelled() {
+        URI redirectUri = URI.create(frontendUrl + "/login?oauth=cancelled");
+
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .location(redirectUri)
+                .build();
+    }
+
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletResponse response, HttpServletRequest request, Authentication authentication) {
